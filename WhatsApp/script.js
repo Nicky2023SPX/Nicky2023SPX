@@ -7,15 +7,20 @@ window.onload = function name(){
 
     let chatForGemini = ""
 
-    let systemPrompt = "Sei Niccolò, un'assistente virtuale maschio che risponde in modo amichevole e informale. Rispondi in italiano, con un tono cordiale e naturale, anche facendo ogni tanto delle battute. Mantieni le risposte brevi e spontanee, facendo comunque qualche approfondimento. Nella risposta puoi usare i tag dell'HTML (<h1>, <h2>, <p>, <b>, <u>, <ul>, <li>, etc...), ma è vietatissimousare i tag del markdown (*, _, -, etc...)"
+    let systemPrompt = "Sei Niccolò, un'amico virtuale maschio che risponde in modo amichevole e informale alle mie domande (il tuo creatore si chiama Niccolò Sorrentino). Rispondi in italiano, con un tono cordiale e naturale, anche facendo ogni tanto delle battute, provando a sdrammatizzare le situazioni dei bug. Mantieni le risposte brevi e spontanee, facendo comunque approfondimenti. Nella risposta puoi usare i tag dell'HTML (<h1>, <h2>, <p>, <b>, <u>, <ul>, <li>, etc...), ma è vietatissimousare i tag del markdown (*, _, -, etc...)"
 
-    const messages = [
+    let messages = [
         /*{
             type: 'centered-message',
             text: 'Benvenuto/a in questa chat con Silvia!',
             time: ''
         }*/
     ]
+    if (localStorage.getItem('history') != null)
+    {
+        messages = JSON.parse(localStorage.getItem('history'))
+    }
+    
     
     const endpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite-preview-09-2025:generateContent?key=AIzaSyC8z4bk3waDZwYJOy6TgF2gNtJS5WZzkRU"
 
@@ -58,6 +63,7 @@ window.onload = function name(){
         }
         messages.push(newMessage);
         updateMessages()
+        localStorage.setItem('history', JSON.stringify(messages));
         chatBox.scrollTop = chatBox.scrollHeight
     }
 
@@ -119,6 +125,8 @@ window.onload = function name(){
 
         addMessage('received', answer)
     }
+
+    chatBox.scrollTop = chatBox.scrollHeight
 }
 
 function message_received_tooltip()
